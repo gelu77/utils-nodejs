@@ -18,6 +18,7 @@
     "config": "0.4.15",
     "async": "*",
     "request": "2.9.153",
-    "sprintf": "*"
+    "sprintf": "*",
+    "tmp": "*"
   }
 }
