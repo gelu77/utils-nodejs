@@ -1,15 +1,12 @@
 #!/bin/sh
 
 cd ~
-mkdir ffmpeg_sources
-mkdir ffmpeg_build
-mkdir bin
+mkdir ffmpeg_sources ffmpeg_build bin tmp
 
-sudo yum install autoconf automake gcc gcc-c++ git libtool make nasm pkgconfig zlib-devel patch
+sudo yum -y install autoconf automake gcc gcc-c++ git libtool make nasm pkgconfig zlib-devel patch
 
 export "PATH=$PATH:$HOME/bin"
 export TMPDIR=~/tmp
-sudo ldconfig ~/ffmpeg_build/lib
 
 #Yasm
 cd ~/ffmpeg_sources
@@ -44,8 +41,9 @@ make distclean
 
 #libvpx
 cd ~/ffmpeg_sources
-git clone --depth 1 https://chromium.googlesource.com/webm/libvpx.git
-cd libvpx
+wget https://webm.googlecode.com/files/libvpx-v1.3.0.zip
+unzip libvpx-v1.3.0.zip
+cd libvpx-v1.3.0
 ./configure --prefix="$HOME/ffmpeg_build" --disable-examples
 make
 make install
@@ -143,3 +141,9 @@ make distclean
 hash -r
 . ~/.bash_profile
 
+#set shared lib path
+ORANGE_LD_CONF=/etc/ld.so.conf.d/orange-sharing-v1.conf
+sudo touch $ORANGE_LD_CONF
+sudo chmod a+w $ORANGE_LD_CONF
+sudo echo -e '/usr/local/lib\n/home/ec2-user/ffmpeg_build/lib\n' >$ORANGE_LD_CONF
+sudo ldconfig

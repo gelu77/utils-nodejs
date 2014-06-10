@@ -5,3 +5,12 @@
 uname -r
 
 #cat /proc/version
+
+#iterator the files in a folder
+for file in ~/*
+  do
+    outfile=`basename $file`
+    echo file="'$file'" \
+    outfile="'$outfile'"
+  done
+
